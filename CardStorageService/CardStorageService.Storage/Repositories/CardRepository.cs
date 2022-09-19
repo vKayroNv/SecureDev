@@ -19,7 +19,9 @@ namespace CardStorageService.Storage.Repositories
             {
                 var client = await _context.Clients.FirstOrDefaultAsync(client => client.ClientId == data.ClientId, cts);
                 if (client == null)
+                {
                     throw new Exception("Client not found");
+                }
 
                 await _context.Cards.AddAsync(data, cts);
                 await _context.SaveChangesAsync(cts);
@@ -38,7 +40,9 @@ namespace CardStorageService.Storage.Repositories
             {
                 var entity = await _context.Cards.FirstOrDefaultAsync(obj => obj.CardId.ToString() == id, cts);
                 if (entity == null)
+                {
                     throw new Exception("Card Id not found");
+                }
 
                 _context.Cards.Remove(entity);
 
@@ -82,7 +86,9 @@ namespace CardStorageService.Storage.Repositories
             {
                 var entity = await _context.Cards.FirstOrDefaultAsync(obj => obj.CardId.ToString() == id, cts);
                 if (entity == null)
+                {
                     throw new Exception("Card Id not found");
+                }
 
                 return entity;
             }
@@ -98,7 +104,9 @@ namespace CardStorageService.Storage.Repositories
             {
                 var entity = await _context.Cards.FirstOrDefaultAsync(obj => obj.CardId.ToString() == data.CardId.ToString(), cts);
                 if (entity == null)
+                {
                     throw new Exception("Card Id not found");
+                }
 
                 entity.CardNo = data.CardNo;
                 entity.ClientId = data.ClientId;

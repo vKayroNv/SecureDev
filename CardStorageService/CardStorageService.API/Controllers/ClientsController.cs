@@ -93,7 +93,7 @@ namespace CardStorageService.API.Controllers
             }
         }
 
-        [HttpGet("getbyid")]
+        [HttpPost("getbyid")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetById([FromBody] ClientGetByIdRequest request, CancellationToken cts)
         {

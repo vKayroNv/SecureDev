@@ -27,8 +27,10 @@ namespace CardStorageService.API.Controllers
             {
                 var cardId = await _service.Create(new()
                 {
+                    ClientId = request.ClientId,
                     CardNo = request.CardNo,
                     ExpDate = request.ExpDate,
+                    Name = request.Name,
                     CVV2 = request.CVV2
                 }, cts);
                 return Ok(new CardCreateResponse()
@@ -93,7 +95,7 @@ namespace CardStorageService.API.Controllers
             }
         }
 
-        [HttpGet("getbyclientid")]
+        [HttpPost("getbyclientid")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByClientId([FromBody] CardGetByClientIdRequest request, CancellationToken cts)
         {
@@ -116,7 +118,7 @@ namespace CardStorageService.API.Controllers
             }
         }
 
-        [HttpGet("getbyid")]
+        [HttpPost("getbyid")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetById([FromBody] CardGetByIdRequest request, CancellationToken cts)
         {

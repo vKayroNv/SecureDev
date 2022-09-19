@@ -45,7 +45,7 @@ namespace CardStorageService.Core.Services
                 var result = new List<ClientDto>();
                 var clients = await _clientRepository.GetAll(cts);
 
-                foreach(var client in clients)
+                foreach (var client in clients)
                 {
                     result.Add(new()
                     {
