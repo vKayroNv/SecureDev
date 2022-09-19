@@ -101,7 +101,6 @@ namespace CardStorageService.Storage.Repositories
                     throw new Exception("Card Id not found");
 
                 entity.CardNo = data.CardNo;
-                entity.Client = data.Client;
                 entity.ClientId = data.ClientId;
                 entity.CVV2 = data.CVV2;
                 entity.ExpDate = data.ExpDate;

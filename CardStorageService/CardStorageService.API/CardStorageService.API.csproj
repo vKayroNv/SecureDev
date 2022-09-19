@@ -17,11 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CardStorageService.Core\CardStorageService.Core.csproj" />
     <ProjectReference Include="..\CardStorageService.Storage\CardStorageService.Storage.csproj" />
   </ItemGroup>
