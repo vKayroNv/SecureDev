@@ -1,4 +1,10 @@
+using CardStorageService.Core.Interfaces;
+using CardStorageService.Core.Services;
+using CardStorageService.Storage;
+using CardStorageService.Storage.Interfaces;
+using CardStorageService.Storage.Repositories;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.EntityFrameworkCore;
 using NLog.Web;
 
 namespace CardStorageService.API
@@ -8,6 +14,15 @@ namespace CardStorageService.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            #region Configuring DbContext
+
+            builder.Services.AddDbContext<DatabaseContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration["ConnectionString"]);
+            });
+
+            #endregion
 
             #region Logging
 
@@ -27,6 +42,20 @@ namespace CardStorageService.API
                 logging.AddConsole();
 
             }).UseNLog(new NLogAspNetCoreOptions() { RemoveLoggerFactoryFilter = true });
+
+            #endregion
+
+            #region Repositories
+
+            builder.Services.AddScoped<ICardRepository, CardRepository>();
+            builder.Services.AddScoped<IClientRepository, ClientRepository>();
+
+            #endregion
+
+            #region Services
+
+            builder.Services.AddScoped<ICardService, CardService>();
+            builder.Services.AddScoped<IClientService, ClientService>();
 
             #endregion
 
