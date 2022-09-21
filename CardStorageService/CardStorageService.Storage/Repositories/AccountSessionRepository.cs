@@ -95,7 +95,6 @@ namespace AccountSessionstorageService.Storage.Repositories
                 entity.AccountId = data.AccountId;
                 entity.TimeCreated = data.TimeCreated;
                 entity.TimeLastRequest = data.TimeLastRequest;
-                entity.IsClosed = data.IsClosed;
                 entity.TimeClosed = data.TimeClosed;
 
                 await _context.SaveChangesAsync(cts);

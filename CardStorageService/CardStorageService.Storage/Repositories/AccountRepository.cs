@@ -62,6 +62,24 @@ namespace CardStorageService.Storage.Repositories
             }
         }
 
+        public async Task<Account> GetByEmail(string email, CancellationToken cts)
+        {
+            try
+            {
+                var entity = await _context.Accounts.FirstOrDefaultAsync(obj => obj.EMail == email, cts);
+                if (entity == null)
+                {
+                    throw new Exception("Email not found");
+                }
+
+                return entity;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<Account> GetById(int id, CancellationToken cts)
         {
             try

@@ -2,7 +2,7 @@
 
 namespace CardStorageService.Storage.Interfaces
 {
-    public interface  IAccountSessionRepository : IRepository<AccountSession, int>
+    public interface IAccountSessionRepository : IRepository<AccountSession, int>
     {
     }
 }

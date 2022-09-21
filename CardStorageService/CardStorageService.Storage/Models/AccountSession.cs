@@ -22,7 +22,7 @@ namespace CardStorageService.Storage.Models
         [Column(TypeName = "datetime2")]
         public DateTime TimeLastRequest { get; set; }
 
-        public bool IsClosed { get; set; }
+        public bool IsClosed => TimeClosed < DateTime.Now;
 
         [Column(TypeName = "datetime2")]
         public DateTime? TimeClosed { get; set; }
