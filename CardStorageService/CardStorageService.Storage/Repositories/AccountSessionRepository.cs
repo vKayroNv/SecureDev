@@ -1,5 +1,4 @@
-﻿using CardStorageService.Storage;
-using CardStorageService.Storage.Interfaces;
+﻿using CardStorageService.Storage.Interfaces;
 using CardStorageService.Storage.Models;
 using Microsoft.EntityFrameworkCore;
 
