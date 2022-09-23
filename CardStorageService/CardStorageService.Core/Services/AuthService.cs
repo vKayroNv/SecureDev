@@ -10,6 +10,8 @@ namespace CardStorageService.Core.Services
         private readonly IAccountRepository _accountRepository;
         private readonly IAccountSessionRepository _sessionRepository;
 
+        public static string SecretKey => TokenUtils.SecretKey;
+
         public AuthService(IAccountRepository accountRepository, IAccountSessionRepository sessionRepository)
         {
             _accountRepository = accountRepository;

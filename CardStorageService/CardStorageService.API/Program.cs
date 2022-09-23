@@ -3,9 +3,13 @@ using CardStorageService.Core.Services;
 using CardStorageService.Storage;
 using CardStorageService.Storage.Interfaces;
 using CardStorageService.Storage.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NLog.Web;
+using System.Text;
 
 namespace CardStorageService.API
 {
@@ -58,16 +62,63 @@ namespace CardStorageService.API
 
             builder.Services.AddScoped<ICardService, CardService>();
             builder.Services.AddScoped<IClientService, ClientService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             #endregion
+
+            builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AuthService.SecretKey)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
 
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CardStorageService", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "JWT Authorization header using the Bearer scheme(Example: 'Bearer 12345abcdef')",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme()
+                        {
+                            Reference = new OpenApiReference()
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+
+            });
 
             var app = builder.Build();
-
 
             if (app.Environment.IsDevelopment())
             {
@@ -75,6 +126,7 @@ namespace CardStorageService.API
                 app.UseSwaggerUI();
             }
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
