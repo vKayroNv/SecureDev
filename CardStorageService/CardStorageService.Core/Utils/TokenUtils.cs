@@ -7,7 +7,7 @@ namespace CardStorageService.Core.Utils
 {
     internal static class TokenUtils
     {
-        private const string SecretKey = "IWhdOiJxO2Y4cl9USiEjYW9bQndGYl94WSZxUDpxUw";
+        public const string SecretKey = "IWhdOiJxO2Y4cl9USiEjYW9bQndGYl94WSZxUDpxUw";
 
         public static (DateTime created, DateTime closed, string token) GenerateJwtToken(int id)
         {

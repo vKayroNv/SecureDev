@@ -1,9 +1,8 @@
-﻿using CardStorageService.Storage;
-using CardStorageService.Storage.Interfaces;
+﻿using CardStorageService.Storage.Interfaces;
 using CardStorageService.Storage.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AccountSessionstorageService.Storage.Repositories
+namespace CardStorageService.Storage.Repositories
 {
     public class AccountSessionRepository : IAccountSessionRepository
     {

@@ -67,10 +67,6 @@ namespace CardStorageService.Storage.Repositories
             try
             {
                 var entity = await _context.Accounts.FirstOrDefaultAsync(obj => obj.EMail == email, cts);
-                if (entity == null)
-                {
-                    throw new Exception("Email not found");
-                }
 
                 return entity;
             }
