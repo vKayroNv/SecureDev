@@ -5,11 +5,17 @@ VisualStudioVersion = 17.3.32728.150
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CardStorageService", "CardStorageService", "{6EE8CEEE-960E-4F38-B479-BFFF7E256DA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardStorageService.API", "CardStorageService\CardStorageService.API\CardStorageService.API.csproj", "{F6DF86F7-6046-4533-B723-F6C297259C4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardStorageService.API", "CardStorageService\CardStorageService.API\CardStorageService.API.csproj", "{F6DF86F7-6046-4533-B723-F6C297259C4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardStorageService.Storage", "CardStorageService\CardStorageService.Storage\CardStorageService.Storage.csproj", "{9D2A9600-6EF5-40DF-A097-8C1B151377E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardStorageService.Storage", "CardStorageService\CardStorageService.Storage\CardStorageService.Storage.csproj", "{9D2A9600-6EF5-40DF-A097-8C1B151377E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardStorageService.Core", "CardStorageService\CardStorageService.Core\CardStorageService.Core.csproj", "{2DFEEAF1-1816-4871-A95D-11B1642EE809}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardStorageService.Core", "CardStorageService\CardStorageService.Core\CardStorageService.Core.csproj", "{2DFEEAF1-1816-4871-A95D-11B1642EE809}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SettingsAndCache", "SettingsAndCache", "{F14BE4CB-45C9-4EB3-978D-393861829012}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataToCache", "SettingsAndCache\DataToCache\DataToCache.csproj", "{AD6C060A-CDFE-4616-A00A-E9651DF2E23E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataToSettings", "SettingsAndCache\DataToSettings\DataToSettings.csproj", "{10BC60CD-9034-462C-98FF-2F97E5B9B063}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +35,14 @@ Global
 		{2DFEEAF1-1816-4871-A95D-11B1642EE809}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DFEEAF1-1816-4871-A95D-11B1642EE809}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DFEEAF1-1816-4871-A95D-11B1642EE809}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD6C060A-CDFE-4616-A00A-E9651DF2E23E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD6C060A-CDFE-4616-A00A-E9651DF2E23E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD6C060A-CDFE-4616-A00A-E9651DF2E23E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD6C060A-CDFE-4616-A00A-E9651DF2E23E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10BC60CD-9034-462C-98FF-2F97E5B9B063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10BC60CD-9034-462C-98FF-2F97E5B9B063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10BC60CD-9034-462C-98FF-2F97E5B9B063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10BC60CD-9034-462C-98FF-2F97E5B9B063}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +51,8 @@ Global
 		{F6DF86F7-6046-4533-B723-F6C297259C4B} = {6EE8CEEE-960E-4F38-B479-BFFF7E256DA1}
 		{9D2A9600-6EF5-40DF-A097-8C1B151377E3} = {6EE8CEEE-960E-4F38-B479-BFFF7E256DA1}
 		{2DFEEAF1-1816-4871-A95D-11B1642EE809} = {6EE8CEEE-960E-4F38-B479-BFFF7E256DA1}
+		{AD6C060A-CDFE-4616-A00A-E9651DF2E23E} = {F14BE4CB-45C9-4EB3-978D-393861829012}
+		{10BC60CD-9034-462C-98FF-2F97E5B9B063} = {F14BE4CB-45C9-4EB3-978D-393861829012}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F1411E3-1D52-4E6F-AA91-FB0BC2CC1DC0}
