@@ -1,3 +1,4 @@
+using AutoMapper;
 using CardStorageService.Core.Interfaces;
 using CardStorageService.Core.Services;
 using CardStorageService.Storage;
@@ -63,6 +64,18 @@ namespace CardStorageService.API
             builder.Services.AddScoped<ICardService, CardService>();
             builder.Services.AddScoped<IClientService, ClientService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+
+            #endregion
+
+            #region AutoMapper
+
+            var mapperConfiguration = new MapperConfiguration(mp =>
+            {
+                mp.AddProfile(new API.Mapper.MapperProfile());
+                mp.AddProfile(new Core.Mapper.MapperProfile());
+            });
+            var mapper = mapperConfiguration.CreateMapper();
+            builder.Services.AddSingleton(mapper);
 
             #endregion
 

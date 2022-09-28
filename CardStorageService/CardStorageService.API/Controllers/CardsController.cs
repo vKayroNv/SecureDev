@@ -1,4 +1,5 @@
-﻿using CardStorageService.API.Models.Requests;
+﻿using AutoMapper;
+using CardStorageService.API.Models.Requests;
 using CardStorageService.API.Models.Responses;
 using CardStorageService.Core.Interfaces;
 using CardStorageService.Storage.Models;
@@ -14,11 +15,13 @@ namespace CardStorageService.API.Controllers
     {
         private readonly ILogger<CardsController> _logger;
         private readonly ICardService _service;
+        private readonly IMapper _mapper;
 
-        public CardsController(ILogger<CardsController> logger, ICardService service)
+        public CardsController(ILogger<CardsController> logger, ICardService service, IMapper mapper)
         {
             _logger = logger;
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpPost("create")]
@@ -27,14 +30,8 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
-                var cardId = await _service.Create(new()
-                {
-                    ClientId = request.ClientId,
-                    CardNo = request.CardNo,
-                    ExpDate = request.ExpDate,
-                    Name = request.Name,
-                    CVV2 = request.CVV2
-                }, cts);
+                var cardId = await _service.Create(_mapper.Map<Card>(request), cts);
+
                 return Ok(new CardCreateResponse()
                 {
                     CardId = cardId.ToString()
@@ -149,15 +146,7 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
-                var count = await _service.Update(new Card()
-                {
-                    CardId = Guid.Parse(request.CardId),
-                    CardNo = request.CardNo,
-                    ClientId = request.ClientId,
-                    CVV2 = request.CVV2,
-                    ExpDate = request.ExpDate,
-                    Name = request.Name
-                }, cts);
+                var count = await _service.Update(_mapper.Map<Card>(request), cts);
 
                 return Ok(new CardUpdateResponse()
                 {

@@ -1,4 +1,5 @@
-﻿using CardStorageService.API.Models.Requests;
+﻿using AutoMapper;
+using CardStorageService.API.Models.Requests;
 using CardStorageService.API.Models.Responses;
 using CardStorageService.Core.Interfaces;
 using CardStorageService.Storage.Models;
@@ -14,11 +15,13 @@ namespace CardStorageService.API.Controllers
     {
         private readonly ILogger<ClientsController> _logger;
         private readonly IClientService _service;
+        private readonly IMapper _mapper;
 
-        public ClientsController(ILogger<ClientsController> logger, IClientService service)
+        public ClientsController(ILogger<ClientsController> logger, IClientService service, IMapper mapper)
         {
             _logger = logger;
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpPost("create")]
@@ -27,12 +30,8 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
-                var clientId = await _service.Create(new()
-                {
-                    Surname = request.Surname,
-                    FirstName = request.FirstName,
-                    Patronymic = request.Patronymic
-                }, cts);
+                var clientId = await _service.Create(_mapper.Map<Client>(request), cts);
+
                 return Ok(new ClientCreateResponse()
                 {
                     ClientId = clientId
@@ -124,13 +123,7 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
-                var count = await _service.Update(new Client()
-                {
-                    ClientId = request.ClientId,
-                    Surname = request.Surname,
-                    FirstName = request.FirstName,
-                    Patronymic = request.Patronymic
-                }, cts);
+                var count = await _service.Update(_mapper.Map<Client>(request), cts);
 
                 return Ok(new ClientUpdateResponse()
                 {

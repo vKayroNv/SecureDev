@@ -1,6 +1,8 @@
-﻿using CardStorageService.API.Models.Requests;
+﻿using AutoMapper;
+using CardStorageService.API.Models.Requests;
 using CardStorageService.API.Models.Responses;
 using CardStorageService.Core.Interfaces;
+using CardStorageService.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CardStorageService.API.Controllers
@@ -11,11 +13,13 @@ namespace CardStorageService.API.Controllers
     {
         private readonly ILogger<AuthController> _logger;
         private readonly IAuthService _service;
+        private readonly IMapper _mapper;
 
-        public AuthController(ILogger<AuthController> logger, IAuthService service)
+        public AuthController(ILogger<AuthController> logger, IAuthService service, IMapper mapper)
         {
             _logger = logger;
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -24,14 +28,8 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
-                var token = await _service.Register(new()
-                {
-                    EMail = request.EMail,
-                    Surname = request.Surname,
-                    FirstName = request.FirstName,
-                    Patronymic = request.Patronymic,
-                    Password = request.Password
-                }, cts);
+                var token = await _service.Register(_mapper.Map<AccountDto>(request), cts);
+
                 return Ok(new AuthRegisterResponse()
                 {
                     Token = token

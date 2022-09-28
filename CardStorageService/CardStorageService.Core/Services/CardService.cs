@@ -1,4 +1,5 @@
-﻿using CardStorageService.Core.Interfaces;
+﻿using AutoMapper;
+using CardStorageService.Core.Interfaces;
 using CardStorageService.Core.Models;
 using CardStorageService.Storage.Interfaces;
 using CardStorageService.Storage.Models;
@@ -8,10 +9,12 @@ namespace CardStorageService.Core.Services
     public class CardService : ICardService
     {
         private readonly ICardRepository _cardRepository;
+        private readonly IMapper _mapper;
 
-        public CardService(ICardRepository cardRepository)
+        public CardService(ICardRepository cardRepository, IMapper mapper)
         {
             _cardRepository = cardRepository;
+            _mapper = mapper;
         }
 
         public async Task<string> Create(Card data, CancellationToken cts)
@@ -42,21 +45,7 @@ namespace CardStorageService.Core.Services
         {
             try
             {
-                var result = new List<CardDto>();
-                var cards = await _cardRepository.GetAll(cts);
-
-                foreach (var card in cards)
-                {
-                    result.Add(new()
-                    {
-                        CardId = card.CardId,
-                        CardNo = card.CardNo,
-                        CVV2 = card.CVV2,
-                        ExpDate = card.ExpDate,
-                        Name = card.Name
-                    });
-                }
-                return result;
+                return _mapper.Map<IReadOnlyList<CardDto>>(await _cardRepository.GetAll(cts));
             }
             catch
             {
@@ -68,21 +57,7 @@ namespace CardStorageService.Core.Services
         {
             try
             {
-                var result = new List<CardDto>();
-                var cards = await _cardRepository.GetByClientId(id, cts);
-
-                foreach (var card in cards)
-                {
-                    result.Add(new()
-                    {
-                        CardId = card.CardId,
-                        CardNo = card.CardNo,
-                        CVV2 = card.CVV2,
-                        ExpDate = card.ExpDate,
-                        Name = card.Name
-                    });
-                }
-                return result;
+                return _mapper.Map<IReadOnlyList<CardDto>>(await _cardRepository.GetByClientId(id, cts));
             }
             catch
             {
@@ -96,14 +71,7 @@ namespace CardStorageService.Core.Services
             {
                 var entity = await _cardRepository.GetById(id, cts);
 
-                return new()
-                {
-                    CardId = entity.CardId,
-                    CardNo = entity.CardNo,
-                    CVV2 = entity.CVV2,
-                    ExpDate = entity.ExpDate,
-                    Name = entity.Name
-                };
+                return _mapper.Map<CardDto>(entity);
             }
             catch
             {

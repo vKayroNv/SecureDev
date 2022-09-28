@@ -1,4 +1,5 @@
-﻿using CardStorageService.Core.Interfaces;
+﻿using AutoMapper;
+using CardStorageService.Core.Interfaces;
 using CardStorageService.Core.Models;
 using CardStorageService.Storage.Interfaces;
 using CardStorageService.Storage.Models;
@@ -8,10 +9,12 @@ namespace CardStorageService.Core.Services
     public class ClientService : IClientService
     {
         private readonly IClientRepository _clientRepository;
+        private readonly IMapper _mapper;
 
-        public ClientService(IClientRepository clientRepository)
+        public ClientService(IClientRepository clientRepository, IMapper mapper)
         {
             _clientRepository = clientRepository;
+            _mapper = mapper;
         }
 
         public async Task<int> Create(Client data, CancellationToken cts)
@@ -42,21 +45,7 @@ namespace CardStorageService.Core.Services
         {
             try
             {
-                var result = new List<ClientDto>();
-                var clients = await _clientRepository.GetAll(cts);
-
-                foreach (var client in clients)
-                {
-                    result.Add(new()
-                    {
-                        ClientId = client.ClientId,
-                        FirstName = client.FirstName,
-                        Surname = client.Surname,
-                        Patronymic = client.Patronymic
-                    });
-                }
-
-                return result;
+                return _mapper.Map<IReadOnlyList<ClientDto>>(await _clientRepository.GetAll(cts));
             }
             catch
             {
@@ -68,15 +57,7 @@ namespace CardStorageService.Core.Services
         {
             try
             {
-                var entity = await _clientRepository.GetById(id, cts);
-
-                return new()
-                {
-                    ClientId = entity.ClientId,
-                    FirstName = entity.FirstName,
-                    Surname = entity.Surname,
-                    Patronymic = entity.Patronymic
-                };
+                return _mapper.Map<ClientDto>(await _clientRepository.GetById(id, cts));
             }
             catch
             {
