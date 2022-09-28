@@ -3,6 +3,7 @@ using CardStorageService.API.Models.Requests;
 using CardStorageService.API.Models.Responses;
 using CardStorageService.Core.Interfaces;
 using CardStorageService.Storage.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,11 +18,29 @@ namespace CardStorageService.API.Controllers
         private readonly ICardService _service;
         private readonly IMapper _mapper;
 
-        public CardsController(ILogger<CardsController> logger, ICardService service, IMapper mapper)
+        private readonly IValidator<CardCreateRequest> _cardCreateRequestValidator;
+        private readonly IValidator<CardDeleteRequest> _cardDeleteRequestValidator;
+        private readonly IValidator<CardGetByClientIdRequest> _cardGetByClientIdRequestValidator;
+        private readonly IValidator<CardGetByIdRequest> _cardGetByIdRequestValidator;
+        private readonly IValidator<CardUpdateRequest> _cardUpdateRequestValidator;
+
+        public CardsController(
+            ILogger<CardsController> logger,
+            ICardService service, IMapper mapper,
+            IValidator<CardCreateRequest> cardCreateRequestValidator,
+            IValidator<CardDeleteRequest> cardDeleteRequestValidator,
+            IValidator<CardGetByClientIdRequest> cardGetByClientIdRequestValidator,
+            IValidator<CardGetByIdRequest> cardGetByIdRequestValidator,
+            IValidator<CardUpdateRequest> cardUpdateRequestValidator)
         {
             _logger = logger;
             _service = service;
             _mapper = mapper;
+            _cardCreateRequestValidator = cardCreateRequestValidator;
+            _cardDeleteRequestValidator = cardDeleteRequestValidator;
+            _cardGetByClientIdRequestValidator = cardGetByClientIdRequestValidator;
+            _cardGetByIdRequestValidator = cardGetByIdRequestValidator;
+            _cardUpdateRequestValidator = cardUpdateRequestValidator;
         }
 
         [HttpPost("create")]
@@ -30,6 +49,12 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
+                var validationResult = _cardCreateRequestValidator.Validate(request);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.ToDictionary());
+                }
+
                 var cardId = await _service.Create(_mapper.Map<Card>(request), cts);
 
                 return Ok(new CardCreateResponse()
@@ -54,6 +79,12 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
+                var validationResult = _cardDeleteRequestValidator.Validate(request);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.ToDictionary());
+                }
+
                 var count = await _service.Delete(request.CardId, cts);
                 return Ok(new CardDeleteResponse()
                 {
@@ -100,6 +131,12 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
+                var validationResult = _cardGetByClientIdRequestValidator.Validate(request);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.ToDictionary());
+                }
+
                 var cards = await _service.GetByClientId(request.ClientId, cts);
                 return Ok(new CardGetByClientIdResponse()
                 {
@@ -123,6 +160,12 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
+                var validationResult = _cardGetByIdRequestValidator.Validate(request);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.ToDictionary());
+                }
+
                 var card = await _service.GetById(request.CardId, cts);
                 return Ok(new CardGetByIdResponse()
                 {
@@ -146,6 +189,12 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
+                var validationResult = _cardUpdateRequestValidator.Validate(request);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.ToDictionary());
+                }
+
                 var count = await _service.Update(_mapper.Map<Card>(request), cts);
 
                 return Ok(new CardUpdateResponse()

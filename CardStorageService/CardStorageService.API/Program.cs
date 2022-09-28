@@ -1,9 +1,12 @@
 using AutoMapper;
+using CardStorageService.API.Models.Requests;
+using CardStorageService.API.Validators;
 using CardStorageService.Core.Interfaces;
 using CardStorageService.Core.Services;
 using CardStorageService.Storage;
 using CardStorageService.Storage.Interfaces;
 using CardStorageService.Storage.Repositories;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +79,22 @@ namespace CardStorageService.API
             });
             var mapper = mapperConfiguration.CreateMapper();
             builder.Services.AddSingleton(mapper);
+
+            #endregion
+
+            #region Validators
+
+            builder.Services.AddScoped<IValidator<AuthLoginRequest>, AuthLoginValidator>();
+            builder.Services.AddScoped<IValidator<AuthRegisterRequest>, AuthRegisterValidator>();
+            builder.Services.AddScoped<IValidator<CardCreateRequest>, CardCreateValidator>();
+            builder.Services.AddScoped<IValidator<CardDeleteRequest>, CardDeleteValidator>();
+            builder.Services.AddScoped<IValidator<CardGetByClientIdRequest>, CardGetByClientIdValidator>();
+            builder.Services.AddScoped<IValidator<CardGetByIdRequest>, CardGetByIdValidator>();
+            builder.Services.AddScoped<IValidator<CardUpdateRequest>, CardUpdateValidator>();
+            builder.Services.AddScoped<IValidator<ClientCreateRequest>, ClientCreateValidator>();
+            builder.Services.AddScoped<IValidator<ClientDeleteRequest>, ClientDeleteValidator>();
+            builder.Services.AddScoped<IValidator<ClientGetByIdRequest>, ClientGetByIdValidator>();
+            builder.Services.AddScoped<IValidator<ClientUpdateRequest>, ClientUpdateValidator>();
 
             #endregion
 
