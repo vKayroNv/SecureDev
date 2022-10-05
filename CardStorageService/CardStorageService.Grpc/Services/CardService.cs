@@ -48,7 +48,7 @@ namespace CardStorageService.Grpc.Services
                     CardId = card.CardId.ToString(),
                     CardNo = card.CardNo,
                     CVV2 = card.CVV2,
-                    ExpDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(card.ExpDate),
+                    ExpDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(card.ExpDate.ToUniversalTime()),
                     Name = card.Name
                 });
             }
@@ -69,7 +69,7 @@ namespace CardStorageService.Grpc.Services
                     CardId = card.CardId.ToString(),
                     CardNo = card.CardNo,
                     CVV2 = card.CVV2,
-                    ExpDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(card.ExpDate),
+                    ExpDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(card.ExpDate.ToUniversalTime()),
                     Name = card.Name
                 });
             }
