@@ -1,7 +1,9 @@
-﻿using CardStorageService.API.Models.Requests;
+﻿using AutoMapper;
+using CardStorageService.API.Models.Requests;
 using CardStorageService.API.Models.Responses;
 using CardStorageService.Core.Interfaces;
 using CardStorageService.Storage.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,11 +16,29 @@ namespace CardStorageService.API.Controllers
     {
         private readonly ILogger<ClientsController> _logger;
         private readonly IClientService _service;
+        private readonly IMapper _mapper;
 
-        public ClientsController(ILogger<ClientsController> logger, IClientService service)
+        private readonly IValidator<ClientCreateRequest> _clientCreateRequestValidator;
+        private readonly IValidator<ClientDeleteRequest> _clientDeleteRequestValidator;
+        private readonly IValidator<ClientGetByIdRequest> _clientGetByIdRequestValidator;
+        private readonly IValidator<ClientUpdateRequest> _clientUpdateRequestValidator;
+
+        public ClientsController(
+            ILogger<ClientsController> logger,
+            IClientService service,
+            IMapper mapper,
+            IValidator<ClientCreateRequest> clientCreateRequestValidator,
+            IValidator<ClientDeleteRequest> clientDeleteRequestValidator,
+            IValidator<ClientGetByIdRequest> clientGetByIdRequestValidator,
+            IValidator<ClientUpdateRequest> clientUpdateRequestValidator)
         {
             _logger = logger;
             _service = service;
+            _mapper = mapper;
+            _clientCreateRequestValidator = clientCreateRequestValidator;
+            _clientDeleteRequestValidator = clientDeleteRequestValidator;
+            _clientGetByIdRequestValidator = clientGetByIdRequestValidator;
+            _clientUpdateRequestValidator = clientUpdateRequestValidator;
         }
 
         [HttpPost("create")]
@@ -27,12 +47,14 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
-                var clientId = await _service.Create(new()
+                var validationResult = _clientCreateRequestValidator.Validate(request);
+                if (!validationResult.IsValid)
                 {
-                    Surname = request.Surname,
-                    FirstName = request.FirstName,
-                    Patronymic = request.Patronymic
-                }, cts);
+                    return BadRequest(validationResult.ToDictionary());
+                }
+
+                var clientId = await _service.Create(_mapper.Map<Client>(request), cts);
+
                 return Ok(new ClientCreateResponse()
                 {
                     ClientId = clientId
@@ -55,6 +77,12 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
+                var validationResult = _clientDeleteRequestValidator.Validate(request);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.ToDictionary());
+                }
+
                 var count = await _service.Delete(request.ClientId, cts);
                 return Ok(new ClientDeleteResponse()
                 {
@@ -101,6 +129,12 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
+                var validationResult = _clientGetByIdRequestValidator.Validate(request);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.ToDictionary());
+                }
+
                 var client = await _service.GetById(request.ClientId, cts);
                 return Ok(new ClientGetByIdResponse()
                 {
@@ -124,13 +158,13 @@ namespace CardStorageService.API.Controllers
         {
             try
             {
-                var count = await _service.Update(new Client()
+                var validationResult = _clientUpdateRequestValidator.Validate(request);
+                if (!validationResult.IsValid)
                 {
-                    ClientId = request.ClientId,
-                    Surname = request.Surname,
-                    FirstName = request.FirstName,
-                    Patronymic = request.Patronymic
-                }, cts);
+                    return BadRequest(validationResult.ToDictionary());
+                }
+
+                var count = await _service.Update(_mapper.Map<Client>(request), cts);
 
                 return Ok(new ClientUpdateResponse()
                 {

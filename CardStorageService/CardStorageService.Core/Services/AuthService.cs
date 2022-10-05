@@ -1,7 +1,9 @@
-﻿using CardStorageService.Core.Interfaces;
+﻿using AutoMapper;
+using CardStorageService.Core.Interfaces;
 using CardStorageService.Core.Models;
 using CardStorageService.Core.Utils;
 using CardStorageService.Storage.Interfaces;
+using CardStorageService.Storage.Models;
 
 namespace CardStorageService.Core.Services
 {
@@ -9,13 +11,15 @@ namespace CardStorageService.Core.Services
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IAccountSessionRepository _sessionRepository;
+        private readonly IMapper _mapper;
 
         public static string SecretKey => TokenUtils.SecretKey;
 
-        public AuthService(IAccountRepository accountRepository, IAccountSessionRepository sessionRepository)
+        public AuthService(IAccountRepository accountRepository, IAccountSessionRepository sessionRepository, IMapper mapper)
         {
             _accountRepository = accountRepository;
             _sessionRepository = sessionRepository;
+            _mapper = mapper;
         }
 
         public async Task<string> Register(AccountDto account, CancellationToken cts)
@@ -30,16 +34,11 @@ namespace CardStorageService.Core.Services
 
                 var passwordHash = PasswordUtils.CreatePasswordHash(account.Password);
 
-                var accountId = await _accountRepository.Create(new()
-                {
-                    EMail = account.EMail,
-                    FirstName = account.FirstName,
-                    Surname = account.Surname,
-                    Patronymic = account.Patronymic,
-                    PasswordSalt = passwordHash.passwordSalt,
-                    PasswordHash = passwordHash.passwordHash,
-                    Locked = false
-                }, cts);
+                var accountModel = _mapper.Map<Account>(account);
+                accountModel.PasswordSalt = passwordHash.passwordSalt;
+                accountModel.PasswordHash = passwordHash.passwordHash;
+
+                var accountId = await _accountRepository.Create(accountModel, cts);
 
                 return await CreateSession(accountId, cts);
             }
