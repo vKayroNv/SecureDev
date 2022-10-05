@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CardStorageService.Core\CardStorageService.Core.csproj" />
+    <ProjectReference Include="..\CardStorageService.Grpc\CardStorageService.Grpc.csproj" />
     <ProjectReference Include="..\CardStorageService.Storage\CardStorageService.Storage.csproj" />
   </ItemGroup>
 

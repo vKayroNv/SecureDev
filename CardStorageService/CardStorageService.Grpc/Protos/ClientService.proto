@@ -1,0 +1,63 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "CardStorageService.Grpc.Protos";
+
+service ClientService {
+	rpc Create (ClientCreateRequest) returns (ClientCreateResponse);
+    rpc Delete (ClientDeleteRequest) returns (ClientDeleteResponse);
+    rpc GetAll (ClientGetAllRequest) returns (ClientGetAllResponse);
+    rpc GetById (ClientGetByIdRequest) returns (ClientGetByIdResponse);
+    rpc Update (ClientUpdateRequest) returns (ClientUpdateResponse);
+}
+
+message Client {
+    int32 ClientId = 1;
+    string Surname = 2;
+    string FirstName = 3;
+    string Patronymic = 4;
+}
+
+message ClientCreateRequest {
+    string Surname = 1;
+    string FirstName = 2;
+    string Patronymic = 3;
+}
+
+message ClientCreateResponse {
+    int32 ClientId = 1;
+}
+
+message ClientDeleteRequest {
+    int32 ClientId = 1;
+}
+
+message ClientDeleteResponse {
+    int32 Count = 1;
+}
+
+message ClientGetAllRequest {
+
+}
+
+message ClientGetAllResponse {
+    repeated Client Clients = 1;
+}
+
+message ClientGetByIdRequest {
+    int32 ClientId = 1;
+}
+
+message ClientGetByIdResponse {
+    Client Client = 1;
+}
+
+message ClientUpdateRequest {
+    int32 ClientId = 1;
+    string Surname = 2;
+    string FirstName = 3;
+    string Patronymic = 4;
+}
+
+message ClientUpdateResponse {
+    int32 Count = 1;
+}

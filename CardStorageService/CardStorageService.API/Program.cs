@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog.Web;
+using System.Net;
 using System.Text;
 
 namespace CardStorageService.API
@@ -98,6 +99,20 @@ namespace CardStorageService.API
 
             #endregion
 
+            #region gRPC
+
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.Listen(IPAddress.Any, 5001, listenOptions =>
+                {
+                    listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+                });
+            });
+
+            builder.Services.AddGrpc();
+
+            #endregion
+
             builder.Services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme =
@@ -158,8 +173,22 @@ namespace CardStorageService.API
                 app.UseSwaggerUI();
             }
 
+            app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseWhen(c => c.Request.ContentType != "application/grpc",
+                builder =>
+                {
+                    builder.UseHttpLogging();
+                }
+            );
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<Grpc.Services.ClientService>();
+                endpoints.MapGrpcService<Grpc.Services.CardService>();
+            });
 
             app.MapControllers();
 

@@ -19,7 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataToSettings", "SettingsA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patterns", "Patterns", "{3F82B64F-8630-482B-8983-702149C6CB14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patterns", "Patterns\Patterns\Patterns.csproj", "{82605E84-1230-4523-8C9A-FFA2BD002915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patterns", "Patterns\Patterns\Patterns.csproj", "{82605E84-1230-4523-8C9A-FFA2BD002915}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardStorageService.Grpc", "CardStorageService\CardStorageService.Grpc\CardStorageService.Grpc.csproj", "{497CA4E0-64D6-421A-BF93-38D8E97D5074}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{82605E84-1230-4523-8C9A-FFA2BD002915}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82605E84-1230-4523-8C9A-FFA2BD002915}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82605E84-1230-4523-8C9A-FFA2BD002915}.Release|Any CPU.Build.0 = Release|Any CPU
+		{497CA4E0-64D6-421A-BF93-38D8E97D5074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{497CA4E0-64D6-421A-BF93-38D8E97D5074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{497CA4E0-64D6-421A-BF93-38D8E97D5074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{497CA4E0-64D6-421A-BF93-38D8E97D5074}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{AD6C060A-CDFE-4616-A00A-E9651DF2E23E} = {F14BE4CB-45C9-4EB3-978D-393861829012}
 		{10BC60CD-9034-462C-98FF-2F97E5B9B063} = {F14BE4CB-45C9-4EB3-978D-393861829012}
 		{82605E84-1230-4523-8C9A-FFA2BD002915} = {3F82B64F-8630-482B-8983-702149C6CB14}
+		{497CA4E0-64D6-421A-BF93-38D8E97D5074} = {6EE8CEEE-960E-4F38-B479-BFFF7E256DA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F1411E3-1D52-4E6F-AA91-FB0BC2CC1DC0}

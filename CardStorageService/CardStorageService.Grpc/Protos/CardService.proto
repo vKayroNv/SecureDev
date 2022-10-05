@@ -1,0 +1,79 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "CardStorageService.Grpc.Protos";
+
+import "google/protobuf/timestamp.proto";
+
+service CardService {
+	rpc Create (CardCreateRequest) returns (CardCreateResponse);
+    rpc Delete (CardDeleteRequest) returns (CardDeleteResponse);
+    rpc GetAll (CardGetAllRequest) returns (CardGetAllResponse);
+    rpc GetByClientId (CardGetByClientIdRequest) returns (CardGetByClientIdResponse);
+    rpc GetById (CardGetByIdRequest) returns (CardGetByIdResponse);
+    rpc Update (CardUpdateRequest) returns (CardUpdateResponse);
+}
+
+message Card {
+    string CardId = 1;
+    string CardNo = 2;
+    string Name = 3;
+    string CVV2 = 4;
+    google.protobuf.Timestamp ExpDate = 5;
+}
+
+message CardCreateRequest {
+    int32 ClientId = 1;
+    string CardNo = 2;
+    string Name = 3;
+    string CVV2 = 4;
+    google.protobuf.Timestamp ExpDate = 5;
+}
+
+message CardCreateResponse {
+    string CardId = 1;
+}
+
+message CardDeleteRequest {
+    string CardId = 1;
+}
+
+message CardDeleteResponse {
+    int32 Count = 1;
+}
+
+message CardGetByClientIdRequest {
+    int32 ClientId = 1;
+}
+
+message CardGetByClientIdResponse {
+    repeated Card Cards = 1;
+}
+
+message CardGetAllRequest {
+
+}
+
+message CardGetAllResponse {
+    repeated Card Cards = 1;
+}
+
+message CardGetByIdRequest {
+    string CardId = 1;
+}
+
+message CardGetByIdResponse {
+    Card Card = 1;
+}
+
+message CardUpdateRequest {
+    string CardId = 1;
+    int32 ClientId = 2;
+    string CardNo = 3;
+    string Name = 4;
+    string CVV2 = 5;
+    google.protobuf.Timestamp ExpDate = 6;
+}
+
+message CardUpdateResponse {
+    int32 Count = 1;
+}
